@@ -34,6 +34,7 @@ def main():
     # on different commands - answer in Telegram
     dispatcher.add_handler(CommandHandler("add", add))
     dispatcher.add_handler(CommandHandler("help", help_command))
+    dispatcher.add_handler(CommandHandler("hello", hello_command))
 
     # dispatcher for chatgpt
     chatgpt = HKBU_ChatGPT()
@@ -68,6 +69,14 @@ def add(update: Update, context: CallbackContext) -> None:
         redis1.get(msg).decode('UTF-8') + ' times.')
     except (IndexError, ValueError):
         update.message.reply_text('Usage: /add <keyword>')
+    
+def hello_command(update: Update, context: CallbackContext) -> None:
+    try:
+        msg = context.args[0]
+        update.message.reply_text('Good day, ' + msg)
+    except (IndexError, ValueError):
+        update.message.reply_text('Usage: /hello <someone>')    
+
     
 if __name__ == '__main__':
     main()
