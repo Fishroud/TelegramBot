@@ -1,2 +1,2 @@
-python .\chatbot.py
-pause
+@echo off
+start "MyChatbotProcess" python chatbot.py
