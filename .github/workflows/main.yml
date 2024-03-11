@@ -1,24 +1,16 @@
-name: Remote Execution
-
+name: Fly Deploy
 on:
   push:
     branches:
-      - main
-
+      - main # change to main if needed
 jobs:
-  remote_execution:
+  deploy:
+    name: Deploy app
     runs-on: ubuntu-latest
-
+    concurrency: deploy-group # optional: ensure only one action runs at a time
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Run SSH command
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.REMOTE_HOST }}
-        username: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 22
-        script: |
-          ssh <remote_user>@<remote_host> 'start C:\Users\Administrator\Desktop\update.bat'
+      - uses: actions/checkout@v3
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
