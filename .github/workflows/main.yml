@@ -1,0 +1,24 @@
+name: Remote Execution
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  remote_execution:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Run SSH command
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
+          ssh <remote_user>@<remote_host> 'start C:\Users\Administrator\Desktop\update.bat'
