@@ -5,6 +5,7 @@ import configparser
 import logging
 import redis
 from ChatGPT_HKBU import HKBU_ChatGPT
+##test commit
 global redis1
 
 def equiped_chatgpt(update, context):
