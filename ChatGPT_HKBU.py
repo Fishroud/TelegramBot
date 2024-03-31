@@ -14,13 +14,16 @@ class HKBU_ChatGPT():
         headers = { 'Content-Type': 'application/json',
         'api-key': (self.config['CHATGPT']['ACCESS_TOKEN']) }
         payload = { 'messages': conversation }
-        response = requests.post(url, json=payload, headers=headers)
+        try:
+            response = requests.post(url, json=payload, headers=headers)
+        except:
+            return 'Error:', response
         if response.status_code == 200:
            data = response.json()
            return data['choices'][0]['message']['content']
         else:
           return 'Error:', response
-    
+
 if __name__ == '__main__':
     ChatGPT_test = HKBU_ChatGPT()
     while True:
