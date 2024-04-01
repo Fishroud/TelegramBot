@@ -1,0 +1,25 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Login to Docker Hub
+      run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+    - name: Build and Tag Docker image
+      run: |
+        docker build . --platform linux/amd64 -t chatbot_amd64
+        docker tag chatbot_amd64 fishroud/chatbot_amd64
+
+    - name: Push Docker image
+      run: docker push fishroud/chatbot_amd64
